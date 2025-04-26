@@ -10,4 +10,3 @@ namespace SystemPrograming5;
 public partial class App : Application
 {
 }
-
