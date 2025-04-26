@@ -1,23 +1,57 @@
-﻿using System.Text;
+﻿using System;
+using System.Numerics;
+using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace SystemPrograming5;
-
-/// <summary>
-/// Interaction logic for MainWindow.xaml
-/// </summary>
-public partial class MainWindow : Window
+namespace SystemPrograming5
 {
-    public MainWindow()
+    public partial class MainWindow : Window
     {
-        InitializeComponent();
+        public MainWindow()
+        {
+            InitializeComponent();
+        }
+
+        private async void CalculatePower_Click(object sender, RoutedEventArgs e)
+        {
+            ResultBlock.Text = "Calculating...";
+
+                try
+                {
+                    int.TryParse(InputNumber.Text, out int number);
+                    int.TryParse(PowerNumber.Text, out int power);
+                    
+                    double result = await Task.Run(() => CalculatePower(number, power));
+                    ResultBlock.Text = $"{number} ^ {power} = {result}";
+                }
+                catch (Exception ex)
+                {
+                    ResultBlock.Text = $"Error: {ex.Message}";
+                }
+        }
+
+        private double CalculatePower(int number, int power)
+        {
+            double result = 1;
+            bool negative_power = power < 0;
+            if (power < 0)
+            {
+                power*= -1;
+            }
+
+            for (int i = 0; i < power; i++)
+            {
+                result *= number;
+            }
+            
+            if (negative_power)
+            {
+                return 1 / result;
+            }
+            else
+            {
+                return result;
+            }
+        }
     }
 }
